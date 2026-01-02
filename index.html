@@ -13,18 +13,26 @@
         </div>
         <p class="income">$/секунду: <span id="mps">0</span></p>
         
-        <div class="click-area">
-            <button id="clickButton">Угнать тачку! (+1$)</button>
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="dela">ДЕЛА</button>
+            <button class="tab-btn" data-tab="upgrades">УЛУЧШЕНИЯ</button>
         </div>
         
-        <div id="floatingTextContainer"></div>
-        
-        <div class="upgrades">
-            <h2>Улучшения</h2>
-            <button id="upgrade1" disabled>Нанять бандита (10$) - +1$/с</button>
-            <button id="upgrade2" disabled>Купить гараж (50$) - +5$/с</button>
-            <button id="upgrade3" disabled>Открыть клуб (200$) - +20$/с</button>
-            <button id="upgrade4" disabled>Построить империю (1000$) - +100$/с</button>
+        <div class="tab-content">
+            <div id="dela" class="tab-panel active">
+                <div class="click-area">
+                    <button id="clickButton"></button>
+                </div>
+                <div id="floatingTextContainer"></div>
+            </div>
+            <div id="upgrades" class="tab-panel">
+                <div class="upgrades">
+                    <button id="upgrade1" disabled>Нанять бандита (10$) - +1$/с</button>
+                    <button id="upgrade2" disabled>Купить гараж (50$) - +5$/с</button>
+                    <button id="upgrade3" disabled>Открыть клуб (200$) - +20$/с</button>
+                    <button id="upgrade4" disabled>Построить империю (1000$) - +100$/с</button>
+                </div>
+            </div>
         </div>
     </div>
     
