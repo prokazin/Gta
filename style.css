@@ -99,7 +99,7 @@ body {
 
 #clickButton:active {
     transform: scale(0.95);
-    box-shadow: 0 0 20px #00ff41;
+    box-shadow: 0 0 30px #00ff41;
 }
 
 #floatingTextContainer {
@@ -125,18 +125,37 @@ body {
 }
 
 @keyframes floatUp {
-    0% {
-        opacity: 0;
-        transform: translateY(0) scale(0.8);
-    }
-    20% {
-        opacity: 1;
-        transform: translateY(-10px) scale(1);
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-100px) scale(1.2);
-    }
+    0% { opacity: 0; transform: translateY(0) scale(0.8); }
+    20% { opacity: 1; transform: translateY(-10px) scale(1); }
+    100% { opacity: 0; transform: translateY(-100px) scale(1.2); }
+}
+
+.action-btn, #startMissionBtn {
+    background-color: #ff4444;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    margin: 15px 0;
+    font-size: 1.1em;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.action-btn:disabled {
+    background-color: #666;
+    cursor: not-allowed;
+}
+
+.mission {
+    background-color: rgba(255, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    border: 2px solid #ff0000;
+}
+
+.hidden {
+    display: none;
 }
 
 .upgrades button {
@@ -162,22 +181,9 @@ body {
 }
 
 @media (max-width: 600px) {
-    .money-display {
-        font-size: 2.8em;
-    }
-    .income {
-        font-size: 1.2em;
-    }
-    #clickButton {
-        width: 50vw;
-        height: 50vw;
-        border-width: 3px;
-    }
-    .floating-text {
-        font-size: 1.6em;
-    }
-    .tab-btn {
-        font-size: 1em;
-        padding: 12px;
-    }
+    .money-display { font-size: 2.8em; }
+    .income { font-size: 1.2em; }
+    #clickButton { width: 50vw; height: 50vw; border-width: 3px; }
+    .floating-text { font-size: 1.6em; }
+    .tab-btn { font-size: 1em; padding: 12px; }
 }
