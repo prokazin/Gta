@@ -2,50 +2,69 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GTA Clicker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <div class="money-display">
-            <span class="dollar-sign">$</span><span id="money">0</span>
-        </div>
-        <p class="income">$/секунду: <span id="mps">0</span></p>
-        
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="dela">ДЕЛА</button>
-            <button class="tab-btn" data-tab="upgrades">УЛУЧШЕНИЯ</button>
-        </div>
-        
-        <div class="tab-content">
-            <div id="dela" class="tab-panel active">
-                <div class="click-area">
-                    <button id="clickButton"></button>
-                </div>
-                <div id="floatingTextContainer"></div>
-                
-                <button id="adrenalineBtn" class="action-btn">АДРЕНАЛИН (100$ — x2 на 30с)</button>
-                
-                <div id="missionPanel" class="mission hidden">
-                    <h3>ОГРАБЬ МАГАЗИН!</h3>
-                    <p>Кликни <span id="missionClicksNeeded">50</span> раз за <span id="missionTimer">10</span> сек!</p>
-                    <button id="startMissionBtn">НАЧАТЬ МИССИЮ</button>
-                    <p id="missionProgress" class="hidden">Кликов: <span id="missionClicks">0</span>/50</p>
-                </div>
+    <!-- Главный экран ДЕЛА (на весь экран) -->
+    <div class="screen active" id="dela">
+        <!-- Прогресс-бар и таймер Адреналина -->
+        <div id="adrenalineTimer" class="adrenaline-timer hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="adrenalineFill"></div>
             </div>
-            
-            <div id="upgrades" class="tab-panel">
-                <div class="upgrades">
-                    <button id="upgrade1">Нанять бандита<br><span class="cost">Цена: 10$</span> — +1$/с</button>
-                    <button id="upgrade2">Купить гараж<br><span class="cost">Цена: 50$</span> — +5$/с</button>
-                    <button id="upgrade3">Открыть клуб<br><span class="cost">Цена: 200$</span> — +20$/с</button>
-                    <button id="upgrade4">Построить империю<br><span class="cost">Цена: 1000$</span> — +100$/с</button>
-                </div>
+            <div class="timer-text">АДРЕНАЛИН: <span id="adrenalineSeconds">30</span>с</div>
+        </div>
+
+        <div class="header">
+            <div class="money-display">
+                <span class="dollar-sign">$</span><span id="money">0</span>
+            </div>
+            <p class="income">$/секунду: <span id="mps">0</span></p>
+        </div>
+
+        <div class="click-area">
+            <button id="clickButton"></button>
+        </div>
+
+        <div id="floatingTextContainer"></div>
+
+        <div class="bottom-actions">
+            <button id="adrenalineBtn" class="action-btn">АДРЕНАЛИН (100$ — x2 клик)</button>
+
+            <div id="missionPanel" class="mission hidden">
+                <h3>ОГРАБЬ МАГАЗИН!</h3>
+                <p>Кликни <span id="missionClicksNeeded">50</span> раз за <span id="missionTimer">10</span> сек!</p>
+                <button id="startMissionBtn">НАЧАТЬ МИССИЮ</button>
+                <p id="missionProgress" class="hidden">Кликов: <span id="missionClicks">0</span>/50</p>
             </div>
         </div>
     </div>
-    
+
+    <!-- Экран УЛУЧШЕНИЯ -->
+    <div class="screen" id="upgrades">
+        <div class="header">
+            <div class="money-display">
+                <span class="dollar-sign">$</span><span id="money2">0</span>
+            </div>
+            <p class="income">$/секунду: <span id="mps2">0</span></p>
+        </div>
+
+        <div class="upgrades-list">
+            <button id="upgrade1">Нанять бандита<br><span class="cost">Цена: 10$</span> — +1$/с</button>
+            <button id="upgrade2">Купить гараж<br><span class="cost">Цена: 50$</span> — +5$/с</button>
+            <button id="upgrade3">Открыть клуб<br><span class="cost">Цена: 200$</span> — +20$/с</button>
+            <button id="upgrade4">Построить империю<br><span class="cost">Цена: 1000$</span> — +100$/с</button>
+        </div>
+    </div>
+
+    <!-- Нижняя панель переключения -->
+    <div class="bottom-tabs">
+        <button class="tab-btn active" data-tab="dela">ДЕЛА</button>
+        <button class="tab-btn" data-tab="upgrades">УЛУЧШЕНИЯ</button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
