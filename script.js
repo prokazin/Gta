@@ -1,10 +1,11 @@
 let money = 0;
-let mps = 0; // Money per second
+let mps = 0;
 
 const moneyDisplay = document.getElementById('money');
 const mpsDisplay = document.getElementById('mps');
 const clickButton = document.getElementById('clickButton');
-const resetButton = document.getElementById('resetButton');
+const floatingContainer = document.getElementById('floatingTextContainer');
+
 const upgrades = [
     { id: 'upgrade1', cost: 10, addMps: 1 },
     { id: 'upgrade2', cost: 50, addMps: 5 },
@@ -12,21 +13,35 @@ const upgrades = [
     { id: 'upgrade4', cost: 1000, addMps: 100 }
 ];
 
-// Клик для заработка
+function createFloatingText() {
+    const text = document.createElement('div');
+    text.classList.add('floating-text');
+    text.textContent = '+1$';
+
+    const offsetX = Math.random() * 80 - 40;
+    text.style.left = `calc(50% + ${offsetX}px)`;
+    text.style.top = '50%';
+
+    floatingContainer.appendChild(text);
+
+    setTimeout(() => {
+        text.remove();
+    }, 1200);
+}
+
 clickButton.addEventListener('click', () => {
     money++;
+    createFloatingText();
     updateDisplay();
     checkUpgrades();
 });
 
-// Автозаработок каждую секунду
 setInterval(() => {
     money += mps;
     updateDisplay();
     checkUpgrades();
 }, 1000);
 
-// Покупка улучшений
 upgrades.forEach(upgrade => {
     const button = document.getElementById(upgrade.id);
     button.addEventListener('click', () => {
@@ -34,28 +49,16 @@ upgrades.forEach(upgrade => {
             money -= upgrade.cost;
             mps += upgrade.addMps;
             updateDisplay();
-            button.disabled = true; // Одноразовая покупка
+            button.disabled = true;
         }
     });
 });
 
-// Сброс
-resetButton.addEventListener('click', () => {
-    money = 0;
-    mps = 0;
-    upgrades.forEach(upgrade => {
-        document.getElementById(upgrade.id).disabled = true;
-    });
-    updateDisplay();
-});
-
-// Обновление отображения
 function updateDisplay() {
-    moneyDisplay.textContent = Math.floor(money);
+    moneyDisplay.textContent = Math.floor(money).toLocaleString('ru-RU');
     mpsDisplay.textContent = mps;
 }
 
-// Проверка доступности улучшений
 function checkUpgrades() {
     upgrades.forEach(upgrade => {
         const button = document.getElementById(upgrade.id);
@@ -63,6 +66,5 @@ function checkUpgrades() {
     });
 }
 
-// Инициализация
 updateDisplay();
 checkUpgrades();
