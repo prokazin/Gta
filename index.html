@@ -24,7 +24,19 @@
                     <button id="clickButton"></button>
                 </div>
                 <div id="floatingTextContainer"></div>
+                
+                <!-- Кнопка адреналина (пункт 2) -->
+                <button id="adrenalineBtn" class="action-btn">АДРЕНАЛИН (x2 на 30с)</button>
+                
+                <!-- Мини-миссия (пункт 7) -->
+                <div id="missionPanel" class="mission hidden">
+                    <h3 id="missionTitle">Ограбь магазин!</h3>
+                    <p>Кликни <span id="missionClicksNeeded">50</span> раз за <span id="missionTimer">10</span> сек!</p>
+                    <button id="startMissionBtn">НАЧАТЬ МИССИЮ</button>
+                    <p id="missionProgress" class="hidden">Кликов: <span id="missionClicks">0</span>/50</p>
+                </div>
             </div>
+            
             <div id="upgrades" class="tab-panel">
                 <div class="upgrades">
                     <button id="upgrade1" disabled>Нанять бандита (10$) - +1$/с</button>
