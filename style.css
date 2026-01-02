@@ -1,38 +1,65 @@
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    margin: 0;
-    padding: 0;
     height: 100vh;
     overflow: hidden;
+    background: #000;
     font-family: Impact, 'Arial Black', Arial, sans-serif;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: #fff;
-    background: linear-gradient(to bottom, #0d0000, #000000), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23000000"/><rect width="50" height="50" fill="%23110000" opacity="0.1"/><rect x="50" y="50" width="50" height="50" fill="%23110000" opacity="0.1"/></svg>');
-    background-size: cover;
 }
 
-.screen {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+.container {
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    transition: transform 0.3s ease;
+    background: linear-gradient(to bottom, #110000, #000000);
 }
 
-.screen:not(.active) { display: none; }
+.hidden { display: none !important; }
 
+/* Таймер адреналина */
+.adrenaline-timer {
+    position: absolute;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85%;
+    z-index: 10;
+}
+
+.progress-bar {
+    height: 16px;
+    background: rgba(0,0,0,0.8);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #ff0000;
+    margin-bottom: 6px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right, #00ff41, #00ffaa);
+    transition: width 1s linear;
+}
+
+.timer-text {
+    text-align: center;
+    font-size: 1.3em;
+    color: #00ff41;
+}
+
+/* Шапка */
 .header {
     text-align: center;
-    padding: 15px;
-    background: rgba(0,0,0,0.6);
-    border-bottom: 3px solid #ff0000;
+    padding: 15px 0;
+    background: rgba(0,0,0,0.7);
 }
 
 .money-display {
-    font-size: 3.2em;
+    font-size: 3.5em;
     font-weight: bold;
     color: #00ff00;
     text-shadow: 0 0 10px #00ff00;
@@ -41,9 +68,10 @@ body {
 .income {
     font-size: 1.4em;
     color: #aaa;
-    margin: 8px 0 0;
+    margin-top: 5px;
 }
 
+/* Зона клика */
 .click-area {
     flex: 1;
     display: flex;
@@ -53,10 +81,10 @@ body {
 }
 
 #clickButton {
-    width: 65vw;
-    height: 65vw;
-    max-width: 320px;
-    max-height: 320px;
+    width: 60vw;
+    height: 60vw;
+    max-width: 280px;
+    max-height: 280px;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300ff41' stroke-width='4'%3E%3Cline x1='12' y1='1' x2='12' y2='23'%3E%3C/line%3E%3Cpath d='M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'%3E%3C/path%3E%3C/svg%3E");
     background-size: 70%;
     background-repeat: no-repeat;
@@ -65,107 +93,73 @@ body {
     border: 6px solid #00ff41;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 0 40px rgba(0, 255, 65, 0.6);
-    transition: all 0.1s;
+    box-shadow: 0 0 40px rgba(0, 255, 65, 0.5);
 }
 
 #clickButton:active {
-    transform: scale(0.9);
-    box-shadow: 0 0 60px #00ff41;
+    transform: scale(0.92);
 }
 
+/* Плавающий текст */
 #floatingTextContainer {
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     overflow: hidden;
 }
 
 .floating-text {
     position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     color: #00ff41;
     font-size: 2.8em;
     font-weight: bold;
-    text-shadow: 3px 3px 8px #000;
+    text-shadow: 0 0 15px #000;
     opacity: 0;
     animation: floatUp 1.4s ease-out forwards;
 }
 
 @keyframes floatUp {
-    0% { opacity: 0; transform: translateY(0) scale(0.8); }
-    30% { opacity: 1; transform: translateY(-30px) scale(1.1); }
-    100% { opacity: 0; transform: translateY(-180px) scale(1.3); }
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    30% { opacity: 1; transform: translate(-50%, -100px) scale(1.1); }
+    100% { opacity: 0; transform: translate(-50%, -200px) scale(1.3); }
 }
 
-.bottom-actions {
-    padding: 20px;
+/* Нижняя панель */
+.bottom-panel {
+    padding: 15px;
+    background: rgba(0,0,0,0.8);
     text-align: center;
 }
 
 .action-btn, #startMissionBtn {
     background: #ff0000;
-    color: white;
+    color: #fff;
     border: none;
-    padding: 16px 30px;
+    padding: 14px 28px;
+    margin: 10px 0;
     font-size: 1.3em;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(255,0,0,0.7);
-    margin: 10px;
 }
 
 .action-btn:disabled { background: #660000; }
 
 .mission {
     background: rgba(255,0,0,0.4);
-    padding: 20px;
-    border-radius: 15px;
+    padding: 18px;
+    border-radius: 12px;
     border: 3px solid #ff0000;
-    margin: 20px 0;
-}
-
-.hidden { display: none; }
-
-/* Таймер Адреналина */
-.adrenaline-timer {
-    position: absolute;
-    top: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    max-width: 400px;
-    z-index: 10;
-}
-
-.progress-bar {
-    height: 20px;
-    background: rgba(0,0,0,0.7);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 8px;
-    border: 2px solid #ff0000;
-}
-
-.progress-fill {
-    height: 100%;
-    width: 100%;
-    background: linear-gradient(to right, #00ff41, #00ffaa);
-    transition: width 1s linear;
-    box-shadow: 0 0 15px #00ff41;
-}
-
-.timer-text {
-    text-align: center;
-    font-size: 1.4em;
-    color: #00ff41;
-    text-shadow: 0 0 10px #000;
+    margin: 15px 0;
 }
 
 /* Улучшения */
 .upgrades-list {
-    padding: 20px;
     flex: 1;
+    padding: 20px;
     overflow-y: auto;
 }
 
@@ -174,17 +168,14 @@ body {
     background: #333;
     color: #fff;
     border: none;
-    padding: 20px;
-    margin: 10px 0;
+    padding: 22px;
+    margin: 12px 0;
     font-size: 1.4em;
     border-radius: 10px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-.upgrades-list button:hover { background: #555; }
-
-.upgrades-list button:disabled { background: #111; cursor: not-allowed; }
+.upgrades-list button:disabled { background: #111; }
 
 .cost {
     display: block;
@@ -193,19 +184,16 @@ body {
     margin-top: 8px;
 }
 
-/* Нижние табы */
-.bottom-tabs {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+/* Табы */
+.tabs {
     display: flex;
-    background: rgba(0,0,0,0.8);
+    margin-top: 15px;
     border-top: 3px solid #ff0000;
 }
 
 .tab-btn {
     flex: 1;
-    padding: 18px;
+    padding: 16px;
     font-size: 1.3em;
     background: #333;
     color: #fff;
