@@ -7,9 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Главный экран ДЕЛА (на весь экран) -->
-    <div class="screen active" id="dela">
-        <!-- Прогресс-бар и таймер Адреналина -->
+    <div class="container">
+        <!-- Таймер адреналина -->
         <div id="adrenalineTimer" class="adrenaline-timer hidden">
             <div class="progress-bar">
                 <div class="progress-fill" id="adrenalineFill"></div>
@@ -17,6 +16,7 @@
             <div class="timer-text">АДРЕНАЛИН: <span id="adrenalineSeconds">30</span>с</div>
         </div>
 
+        <!-- Деньги и доход -->
         <div class="header">
             <div class="money-display">
                 <span class="dollar-sign">$</span><span id="money">0</span>
@@ -24,13 +24,14 @@
             <p class="income">$/секунду: <span id="mps">0</span></p>
         </div>
 
+        <!-- Основная зона клика -->
         <div class="click-area">
             <button id="clickButton"></button>
+            <div id="floatingTextContainer"></div>
         </div>
 
-        <div id="floatingTextContainer"></div>
-
-        <div class="bottom-actions">
+        <!-- Нижняя панель действий -->
+        <div class="bottom-panel">
             <button id="adrenalineBtn" class="action-btn">АДРЕНАЛИН (100$ — x2 клик)</button>
 
             <div id="missionPanel" class="mission hidden">
@@ -39,11 +40,17 @@
                 <button id="startMissionBtn">НАЧАТЬ МИССИЮ</button>
                 <p id="missionProgress" class="hidden">Кликов: <span id="missionClicks">0</span>/50</p>
             </div>
+
+            <!-- Табы -->
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="dela">ДЕЛА</button>
+                <button class="tab-btn" data-tab="upgrades">УЛУЧШЕНИЯ</button>
+            </div>
         </div>
     </div>
 
-    <!-- Экран УЛУЧШЕНИЯ -->
-    <div class="screen" id="upgrades">
+    <!-- Вкладка УЛУЧШЕНИЯ (скрытая) -->
+    <div class="container hidden" id="upgrades-container">
         <div class="header">
             <div class="money-display">
                 <span class="dollar-sign">$</span><span id="money2">0</span>
@@ -57,12 +64,11 @@
             <button id="upgrade3">Открыть клуб<br><span class="cost">Цена: 200$</span> — +20$/с</button>
             <button id="upgrade4">Построить империю<br><span class="cost">Цена: 1000$</span> — +100$/с</button>
         </div>
-    </div>
 
-    <!-- Нижняя панель переключения -->
-    <div class="bottom-tabs">
-        <button class="tab-btn active" data-tab="dela">ДЕЛА</button>
-        <button class="tab-btn" data-tab="upgrades">УЛУЧШЕНИЯ</button>
+        <div class="tabs">
+            <button class="tab-btn" data-tab="dela">ДЕЛА</button>
+            <button class="tab-btn active" data-tab="upgrades">УЛУЧШЕНИЯ</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
