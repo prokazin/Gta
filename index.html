@@ -9,7 +9,6 @@
 <body>
     <!-- Экран ДЕЛА -->
     <div class="screen active" id="dela-screen">
-        <!-- Таймер адреналина -->
         <div id="adrenalineTimer" class="adrenaline-timer hidden">
             <div class="progress-bar">
                 <div class="progress-fill" id="adrenalineFill"></div>
@@ -19,9 +18,9 @@
 
         <div class="header">
             <div class="money-display">
-                <span class="dollar-sign">$</span><span id="money">0</span>
+                <span class="dollar-sign">$</span><span id="money-dela">0</span>
             </div>
-            <p class="income">$/секунду: <span id="mps">0</span></p>
+            <p class="income">$/секунду: <span id="mps-dela">0</span></p>
         </div>
 
         <div class="click-area">
@@ -70,7 +69,7 @@
         </div>
     </div>
 
-    <!-- Нижние табы -->
+    <!-- Нижняя панель табов (как в iOS) -->
     <div class="bottom-tabs">
         <button class="tab-btn active" data-tab="dela">ДЕЛА</button>
         <button class="tab-btn" data-tab="upgrades">УЛУЧШЕНИЯ</button>
