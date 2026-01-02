@@ -2,7 +2,8 @@ let money = 0;
 let mps = 0;
 let clickMultiplier = 1;
 let adrenalineActive = false;
-let lastTime = Date.now();
+let adrenalineTimeLeft = 0;
+let adrenalineInterval = null;
 
 // Мини-миссия
 let missionActive = false;
@@ -10,7 +11,7 @@ let missionClicks = 0;
 let missionClicksNeeded = 50;
 let missionTimeLeft = 10;
 
-// Улучшения (теперь с количеством и растущей ценой)
+// Улучшения
 const upgrades = [
     { id: 'upgrade1', baseCost: 10,   addMps: 1,   owned: 0, multiplier: 1.15 },
     { id: 'upgrade2', baseCost: 50,   addMps: 5,   owned: 0, multiplier: 1.15 },
@@ -18,37 +19,38 @@ const upgrades = [
     { id: 'upgrade4', baseCost: 1000, addMps: 100, owned: 0, multiplier: 1.15 }
 ];
 
-// Элементы DOM
+// DOM элементы
 const moneyDisplay = document.getElementById('money');
+const moneyDisplay2 = document.getElementById('money2');
 const mpsDisplay = document.getElementById('mps');
+const mpsDisplay2 = document.getElementById('mps2');
 const clickButton = document.getElementById('clickButton');
 const floatingContainer = document.getElementById('floatingTextContainer');
 const adrenalineBtn = document.getElementById('adrenalineBtn');
+const adrenalineTimer = document.getElementById('adrenalineTimer');
+const adrenalineFill = document.getElementById('adrenalineFill');
+const adrenalineSeconds = document.getElementById('adrenalineSeconds');
+
 const missionPanel = document.getElementById('missionPanel');
 const startMissionBtn = document.getElementById('startMissionBtn');
 const missionTimer = document.getElementById('missionTimer');
 const missionProgress = document.getElementById('missionProgress');
 const missionClicksEl = document.getElementById('missionClicks');
 
-// Загрузка игры
+// Загрузка
 function loadGame() {
     const saved = localStorage.getItem('gtaClickerSave');
     if (saved) {
         const data = JSON.parse(saved);
         money = data.money || 0;
         mps = data.mps || 0;
-        upgrades.forEach((u, i) => {
-            if (data.upgrades && data.upgrades[i]) {
-                u.owned = data.upgrades[i].owned || 0;
-            }
-        });
+        upgrades.forEach((u, i) => u.owned = (data.upgrades?.[i]?.owned) || 0);
 
-        // Оффлайн-прогресс
         const offlineTime = (Date.now() - (data.lastTime || Date.now())) / 1000;
-        const offlineEarnings = Math.floor(offlineTime * mps);
-        if (offlineTime > 10 && offlineEarnings > 0) {
-            money += offlineEarnings;
-            createFloatingText(`Оффлайн: +${offlineEarnings.toLocaleString('ru-RU')}$`, '#00aa00');
+        const earnings = Math.floor(offlineTime * mps);
+        if (earnings > 0) {
+            money += earnings;
+            createFloatingText(`Оффлайн: +${earnings.toLocaleString('ru-RU')}$`, '#00ff00');
         }
     }
     updateAll();
@@ -56,29 +58,26 @@ function loadGame() {
 
 // Сохранение
 function saveGame() {
-    const data = {
-        money,
-        mps,
-        upgrades: upgrades.map(u => ({ owned: u.owned })),
+    localStorage.setItem('gtaClickerSave', JSON.stringify({
+        money, mps,
+        upgrades: upgrades.map(u => ({owned: u.owned})),
         lastTime: Date.now()
-    };
-    localStorage.setItem('gtaClickerSave', JSON.stringify(data));
+    }));
 }
 
-// Анимация текста
+// Анимация
 function createFloatingText(text = `+${clickMultiplier}$`, color = '#00ff41') {
     const el = document.createElement('div');
     el.classList.add('floating-text');
     el.textContent = text;
     el.style.color = color;
-    const offsetX = Math.random() * 80 - 40;
+    const offsetX = Math.random() * 100 - 50;
     el.style.left = `calc(50% + ${offsetX}px)`;
-    el.style.top = '50%';
     floatingContainer.appendChild(el);
-    setTimeout(() => el.remove(), 1200);
+    setTimeout(() => el.remove(), 1400);
 }
 
-// Клик по доллару
+// Клик
 clickButton.addEventListener('click', () => {
     money += clickMultiplier;
     createFloatingText(`+${clickMultiplier}$`);
@@ -91,43 +90,52 @@ clickButton.addEventListener('click', () => {
     }
 });
 
-// Пассивный доход с анимацией
+// Пассивка
 setInterval(() => {
     if (mps > 0) {
         money += mps;
-        createFloatingText(`+${mps}$`, '#00aa00');
+        createFloatingText(`+${mps}$`, '#00cc00');
         updateAll();
     }
 }, 1000);
 
-// Адреналин
+// Адреналин с таймером
 adrenalineBtn.addEventListener('click', () => {
     if (money >= 100 && !adrenalineActive) {
         money -= 100;
         clickMultiplier = 2;
         adrenalineActive = true;
-        adrenalineBtn.disabled = true;
-        adrenalineBtn.textContent = 'АДРЕНАЛИН АКТИВЕН (30с)';
+        adrenalineTimeLeft = 30;
 
-        setTimeout(() => {
-            clickMultiplier = 1;
-            adrenalineActive = false;
-            adrenalineBtn.disabled = false;
-            adrenalineBtn.textContent = 'АДРЕНАЛИН (100$ — x2 на 30с)';
-            updateAll();
-        }, 30000);
+        adrenalineTimer.classList.remove('hidden');
+        adrenalineSeconds.textContent = adrenalineTimeLeft;
+        adrenalineFill.style.width = '100%';
+
+        adrenalineInterval = setInterval(() => {
+            adrenalineTimeLeft--;
+            adrenalineSeconds.textContent = adrenalineTimeLeft;
+            adrenalineFill.style.width = (adrenalineTimeLeft / 30 * 100) + '%';
+
+            if (adrenalineTimeLeft <= 0) {
+                clearInterval(adrenalineInterval);
+                clickMultiplier = 1;
+                adrenalineActive = false;
+                adrenalineTimer.classList.add('hidden');
+                updateAll();
+            }
+        }, 1000);
 
         updateAll();
     }
 });
 
-// Мини-миссия
+// Миссия
 startMissionBtn.addEventListener('click', () => {
     missionActive = true;
     missionClicks = 0;
     missionTimeLeft = 10;
     missionClicksEl.textContent = 0;
-    missionTimer.textContent = missionTimeLeft;
+    missionTimer.textContent = 10;
     missionProgress.classList.remove('hidden');
     startMissionBtn.classList.add('hidden');
 
@@ -146,58 +154,58 @@ function endMission(success) {
     if (success) {
         const reward = mps * 10;
         money += reward;
-        createFloatingText(`МИССИЯ УСПЕШНА! +${reward.toLocaleString('ru-RU')}$`, '#ffff00');
+        createFloatingText(`УСПЕХ! +${reward.toLocaleString('ru-RU')}$`, '#ffff00');
     } else {
-        createFloatingText('МИССИЯ ПРОВАЛЕНА', '#ff0000');
+        createFloatingText('ПРОВАЛ', '#ff0000');
     }
     missionProgress.classList.add('hidden');
     startMissionBtn.classList.remove('hidden');
     updateAll();
 }
 
-// Покупка улучшений (с ростом цены)
-upgrades.forEach(upgrade => {
-    const btn = document.getElementById(upgrade.id);
-    btn.addEventListener('click', () => {
-        const currentCost = Math.floor(upgrade.baseCost * Math.pow(upgrade.multiplier, upgrade.owned));
-        if (money >= currentCost) {
-            money -= currentCost;
-            upgrade.owned++;
-            mps += upgrade.addMps;
+// Улучшения
+upgrades.forEach(u => {
+    document.getElementById(u.id).addEventListener('click', () => {
+        const cost = Math.floor(u.baseCost * Math.pow(u.multiplier, u.owned));
+        if (money >= cost) {
+            money -= cost;
+            u.owned++;
+            mps += u.addMps;
             updateAll();
             saveGame();
         }
     });
 });
 
-// Обновление отображения
+// Обновление
 function updateAll() {
-    moneyDisplay.textContent = Math.floor(money).toLocaleString('ru-RU');
+    const formattedMoney = Math.floor(money).toLocaleString('ru-RU');
+    moneyDisplay.textContent = formattedMoney;
+    moneyDisplay2.textContent = formattedMoney;
     mpsDisplay.textContent = mps;
+    mpsDisplay2.textContent = mps;
 
-    // Обновляем цены улучшений
-    upgrades.forEach(upgrade => {
-        const btn = document.getElementById(upgrade.id);
-        const currentCost = Math.floor(upgrade.baseCost * Math.pow(upgrade.multiplier, upgrade.owned));
-        const costEl = btn.querySelector('.cost');
-        costEl.textContent = `Цена: ${currentCost.toLocaleString('ru-RU')}$`;
-        btn.disabled = money < currentCost;
+    upgrades.forEach(u => {
+        const btn = document.getElementById(u.id);
+        const cost = Math.floor(u.baseCost * Math.pow(u.multiplier, u.owned));
+        btn.querySelector('.cost').textContent = `Цена: ${cost.toLocaleString('ru-RU')}$`;
+        btn.disabled = money < cost;
     });
 
-    // Адреналин
     adrenalineBtn.disabled = money < 100 || adrenalineActive;
 }
 
-// Переключение вкладок
+// Табы
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         btn.classList.add('active');
         document.getElementById(btn.dataset.tab).classList.add('active');
+        updateAll(); // обновляем деньги и mps на новой вкладке
     });
 });
 
-// Инициализация
+// Запуск
 loadGame();
-setInterval(saveGame, 10000); // автосейв каждые 10 сек
+setInterval(saveGame, 10000);
