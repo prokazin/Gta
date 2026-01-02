@@ -5,13 +5,11 @@ let adrenalineActive = false;
 let adrenalineTimeLeft = 0;
 let adrenalineInterval = null;
 
-// Мини-миссия
 let missionActive = false;
 let missionClicks = 0;
 let missionClicksNeeded = 50;
 let missionTimeLeft = 10;
 
-// Улучшения
 const upgrades = [
     { id: 'upgrade1', baseCost: 10,   addMps: 1,   owned: 0, multiplier: 1.15 },
     { id: 'upgrade2', baseCost: 50,   addMps: 5,   owned: 0, multiplier: 1.15 },
@@ -19,11 +17,9 @@ const upgrades = [
     { id: 'upgrade4', baseCost: 1000, addMps: 100, owned: 0, multiplier: 1.15 }
 ];
 
-// DOM элементы
-const moneyDisplay = document.getElementById('money');
-const moneyDisplay2 = document.getElementById('money2');
-const mpsDisplay = document.getElementById('mps');
-const mpsDisplay2 = document.getElementById('mps2');
+const moneyDisplays = [document.getElementById('money'), document.getElementById('money-upgrades')];
+const mpsDisplays = [document.getElementById('mps'), document.getElementById('mps-upgrades')];
+
 const clickButton = document.getElementById('clickButton');
 const floatingContainer = document.getElementById('floatingTextContainer');
 const adrenalineBtn = document.getElementById('adrenalineBtn');
@@ -37,14 +33,13 @@ const missionTimer = document.getElementById('missionTimer');
 const missionProgress = document.getElementById('missionProgress');
 const missionClicksEl = document.getElementById('missionClicks');
 
-// Загрузка
 function loadGame() {
     const saved = localStorage.getItem('gtaClickerSave');
     if (saved) {
         const data = JSON.parse(saved);
         money = data.money || 0;
         mps = data.mps || 0;
-        upgrades.forEach((u, i) => u.owned = (data.upgrades?.[i]?.owned) || 0);
+        upgrades.forEach((u, i) => u.owned = data.upgrades?.[i]?.owned || 0);
 
         const offlineTime = (Date.now() - (data.lastTime || Date.now())) / 1000;
         const earnings = Math.floor(offlineTime * mps);
@@ -56,7 +51,6 @@ function loadGame() {
     updateAll();
 }
 
-// Сохранение
 function saveGame() {
     localStorage.setItem('gtaClickerSave', JSON.stringify({
         money, mps,
@@ -65,7 +59,6 @@ function saveGame() {
     }));
 }
 
-// Анимация
 function createFloatingText(text = `+${clickMultiplier}$`, color = '#00ff41') {
     const el = document.createElement('div');
     el.classList.add('floating-text');
@@ -77,7 +70,6 @@ function createFloatingText(text = `+${clickMultiplier}$`, color = '#00ff41') {
     setTimeout(() => el.remove(), 1400);
 }
 
-// Клик
 clickButton.addEventListener('click', () => {
     money += clickMultiplier;
     createFloatingText(`+${clickMultiplier}$`);
@@ -90,7 +82,6 @@ clickButton.addEventListener('click', () => {
     }
 });
 
-// Пассивка
 setInterval(() => {
     if (mps > 0) {
         money += mps;
@@ -99,7 +90,6 @@ setInterval(() => {
     }
 }, 1000);
 
-// Адреналин с таймером
 adrenalineBtn.addEventListener('click', () => {
     if (money >= 100 && !adrenalineActive) {
         money -= 100;
@@ -129,7 +119,6 @@ adrenalineBtn.addEventListener('click', () => {
     }
 });
 
-// Миссия
 startMissionBtn.addEventListener('click', () => {
     missionActive = true;
     missionClicks = 0;
@@ -163,7 +152,6 @@ function endMission(success) {
     updateAll();
 }
 
-// Улучшения
 upgrades.forEach(u => {
     document.getElementById(u.id).addEventListener('click', () => {
         const cost = Math.floor(u.baseCost * Math.pow(u.multiplier, u.owned));
@@ -177,13 +165,10 @@ upgrades.forEach(u => {
     });
 });
 
-// Обновление
 function updateAll() {
     const formattedMoney = Math.floor(money).toLocaleString('ru-RU');
-    moneyDisplay.textContent = formattedMoney;
-    moneyDisplay2.textContent = formattedMoney;
-    mpsDisplay.textContent = mps;
-    mpsDisplay2.textContent = mps;
+    moneyDisplays.forEach(d => d.textContent = formattedMoney);
+    mpsDisplays.forEach(d => d.textContent = mps);
 
     upgrades.forEach(u => {
         const btn = document.getElementById(u.id);
@@ -195,17 +180,17 @@ function updateAll() {
     adrenalineBtn.disabled = money < 100 || adrenalineActive;
 }
 
-// Табы
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
         btn.classList.add('active');
-        document.getElementById(btn.dataset.tab).classList.add('active');
-        updateAll(); // обновляем деньги и mps на новой вкладке
+        document.getElementById(btn.dataset.tab + '-screen').classList.add('active');
+
+        updateAll();
     });
 });
 
-// Запуск
 loadGame();
 setInterval(saveGame, 10000);
