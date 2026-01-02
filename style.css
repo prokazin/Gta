@@ -1,0 +1,93 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+}
+
+.container {
+    max-width: 90%;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); /* Красный glow для GTA-атмосферы */
+}
+
+h1 {
+    font-size: 2em;
+    color: #ff0000; /* Красный как в GTA */
+}
+
+p {
+    font-size: 1.2em;
+}
+
+#clickButton {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 20px;
+    font-size: 1.5em;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    margin: 20px 0;
+    transition: transform 0.1s;
+    touch-action: manipulation; /* Для мобильных */
+}
+
+#clickButton:active {
+    transform: scale(0.95);
+}
+
+.upgrades button {
+    background-color: #555;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 1.2em;
+    margin: 10px 0;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.upgrades button:hover {
+    background-color: #777;
+}
+
+.upgrades button:disabled {
+    background-color: #222;
+    cursor: not-allowed;
+}
+
+#resetButton {
+    background-color: #888;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Мобильная оптимизация: медиа-запросы */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+    }
+    p, .upgrades button {
+        font-size: 1em;
+    }
+    #clickButton {
+        padding: 15px;
+        font-size: 1.2em;
+    }
+}
