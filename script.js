@@ -17,8 +17,8 @@ const upgrades = [
     { id: 'upgrade4', baseCost: 1000, addMps: 100, owned: 0, multiplier: 1.15 }
 ];
 
-const moneyDisplays = [document.getElementById('money'), document.getElementById('money-upgrades')];
-const mpsDisplays = [document.getElementById('mps'), document.getElementById('mps-upgrades')];
+const moneyDisplays = [document.getElementById('money-dela'), document.getElementById('money-upgrades')];
+const mpsDisplays = [document.getElementById('mps-dela'), document.getElementById('mps-upgrades')];
 
 const clickButton = document.getElementById('clickButton');
 const floatingContainer = document.getElementById('floatingTextContainer');
@@ -180,6 +180,7 @@ function updateAll() {
     adrenalineBtn.disabled = money < 100 || adrenalineActive;
 }
 
+// Переключение вкладок
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
