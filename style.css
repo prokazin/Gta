@@ -8,7 +8,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: #fff;
-    touch-action: manipulation; /* Запрещает зум при двойном тапе */
+    touch-action: manipulation;
 }
 
 .screen {
@@ -18,12 +18,17 @@ body {
     display: flex;
     flex-direction: column;
     background: linear-gradient(to bottom, #110000, #000);
-    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
-.screen.active { display: flex; }
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
 
-/* Таймер адреналина */
+/* Адреналин таймер */
 .adrenaline-timer {
     position: absolute;
     top: 70px;
@@ -53,6 +58,7 @@ body {
     text-align: center;
     font-size: 1.3em;
     color: #00ff41;
+    text-shadow: 0 0 10px #000;
 }
 
 /* Шапка */
@@ -60,6 +66,7 @@ body {
     text-align: center;
     padding: 15px 0;
     background: rgba(0,0,0,0.7);
+    border-bottom: 3px solid #ff0000;
 }
 
 .money-display {
@@ -104,7 +111,7 @@ body {
     transform: scale(0.92);
 }
 
-/* Плавающий текст */
+/* Анимация +1$ */
 #floatingTextContainer {
     position: absolute;
     width: 100%;
@@ -132,7 +139,7 @@ body {
     100% { opacity: 0; transform: translate(-50%, -200px) scale(1.3); }
 }
 
-/* Нижняя панель */
+/* Нижняя панель на экране ДЕЛА */
 .bottom-panel {
     padding: 15px;
     background: rgba(0,0,0,0.8);
@@ -192,7 +199,7 @@ body {
     margin-top: 8px;
 }
 
-/* Табы внизу */
+/* Нижние табы как в iOS */
 .bottom-tabs {
     position: fixed;
     bottom: 0;
@@ -200,18 +207,20 @@ body {
     display: flex;
     background: rgba(0,0,0,0.9);
     border-top: 3px solid #ff0000;
+    height: 70px;
 }
 
 .tab-btn {
     flex: 1;
-    padding: 18px;
-    font-size: 1.3em;
-    background: #333;
-    color: #fff;
+    padding: 10px;
+    font-size: 1.2em;
+    background: transparent;
+    color: #888;
     border: none;
     cursor: pointer;
 }
 
 .tab-btn.active {
-    background: #ff0000;
+    color: #ff0000;
+    font-weight: bold;
 }
