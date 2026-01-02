@@ -8,16 +8,20 @@ body {
     text-transform: uppercase;
     letter-spacing: 1.5px;
     color: #fff;
+    touch-action: manipulation; /* Запрещает зум при двойном тапе */
 }
 
-.container {
-    height: 100vh;
+.screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(to bottom, #110000, #000000);
+    background: linear-gradient(to bottom, #110000, #000);
+    display: none;
 }
 
-.hidden { display: none !important; }
+.screen.active { display: flex; }
 
 /* Таймер адреналина */
 .adrenaline-timer {
@@ -71,7 +75,7 @@ body {
     margin-top: 5px;
 }
 
-/* Зона клика */
+/* Клик-зона */
 .click-area {
     flex: 1;
     display: flex;
@@ -156,14 +160,14 @@ body {
     margin: 15px 0;
 }
 
-/* Улучшения */
+/* Список улучшений */
 .upgrades-list {
     flex: 1;
     padding: 20px;
     overflow-y: auto;
 }
 
-.upgrades-list button {
+.upgrade-btn {
     width: 100%;
     background: #333;
     color: #fff;
@@ -173,9 +177,13 @@ body {
     font-size: 1.4em;
     border-radius: 10px;
     cursor: pointer;
+    text-align: center;
 }
 
-.upgrades-list button:disabled { background: #111; }
+.upgrade-btn:disabled {
+    background: #111;
+    cursor: not-allowed;
+}
 
 .cost {
     display: block;
@@ -184,16 +192,19 @@ body {
     margin-top: 8px;
 }
 
-/* Табы */
-.tabs {
+/* Табы внизу */
+.bottom-tabs {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     display: flex;
-    margin-top: 15px;
+    background: rgba(0,0,0,0.9);
     border-top: 3px solid #ff0000;
 }
 
 .tab-btn {
     flex: 1;
-    padding: 16px;
+    padding: 18px;
     font-size: 1.3em;
     background: #333;
     color: #fff;
