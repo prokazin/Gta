@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTA Financial Clicker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>GTA Financial Empire</h1>
+        <p>Твои бабки: $<span id="money">0</span></p>
+        <p>Бабки в секунду: <span id="mps">0</span></p>
+        
+        <button id="clickButton">Угнать тачку! (+1$)</button>
+        
+        <div class="upgrades">
+            <h2>Улучшения (GTA-style)</h2>
+            <button id="upgrade1" disabled>Нанять бандита (10$) - +1$/с</button>
+            <button id="upgrade2" disabled>Купить гараж (50$) - +5$/с</button>
+            <button id="upgrade3" disabled>Открыть клуб (200$) - +20$/с</button>
+            <button id="upgrade4" disabled>Построить империю (1000$) - +100$/с</button>
+        </div>
+        
+        <button id="resetButton">Сбежать от копов (сброс)</button>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
